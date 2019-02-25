@@ -1,0 +1,29 @@
+{
+  "name": "promernstack",
+  "version": "1.0.0",
+  "description": "code in book ProMernStack",
+  "main": "index.js",
+  "scripts": {
+    "compile": "babel src --presets react,env --out-dir static",
+    "watch": "babel src --presets react,env --out-dir static -watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/givemepower8/ProMernStack.git"
+  },
+  "author": "Vasan Subramanian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/givemepower8/ProMernStack/issues"
+  },
+  "homepage": "https://github.com/givemepower8/ProMernStack#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1"
+  }
+}
