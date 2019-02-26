@@ -14,6 +14,10 @@ Install express
 
 `npm install body-parser --save`
 
+MongoDB
+
+`npm install mongodb --save`
+
 Babel 6
 
 `npm install -D babel-cli babel-preset-react babel-preset-env`
