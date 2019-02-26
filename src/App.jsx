@@ -1,6 +1,3 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-
 const contentNode = document.getElementById('contents')
 class IssueList extends React.Component {
   render() {
