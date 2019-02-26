@@ -1,8 +1,8 @@
-const contentNode = document.getElementById('contents')
+const contentNode = document.getElementById('contents');
 
 class IssueFilter extends React.Component {
   render() {
-    return <div>This is a placeholder for the Issue Filter.</div>
+    return <div>This is a placeholder for the Issue Filter.</div>;
   }
 }
 
@@ -20,12 +20,12 @@ const IssueRow = props => (
     </td>
     <td>{props.issue.title}</td>
   </tr>
-)
+);
 
 function IssueTable(props) {
   const issueRows = props.issues.map(issue => (
     <IssueRow key={issue.id} issue={issue} />
-  ))
+  ));
   return (
     <table className="bordered-table">
       <thead>
@@ -41,27 +41,27 @@ function IssueTable(props) {
       </thead>
       <tbody>{issueRows}</tbody>
     </table>
-  )
+  );
 }
 
 class IssueAdd extends React.Component {
   constructor() {
-    super()
-    this.handleSubmit = this.handleSubmit.bind(this)
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(e) {
-    e.preventDefault()
-    const form = document.forms.issueAdd
+    e.preventDefault();
+    let form = document.forms.issueAdd;
     this.props.createIssue({
       owner: form.owner.value,
       title: form.title.value,
       status: 'New',
       created: new Date()
-    })
+    });
     // clear the form for the next input
-    form.owner.value = ''
-    form.title.value = ''
+    form.owner.value = '';
+    form.title.value = '';
   }
 
   render() {
@@ -73,54 +73,65 @@ class IssueAdd extends React.Component {
           <button>Add</button>
         </form>
       </div>
-    )
+    );
   }
 }
 
-const issues = [
-  {
-    id: 1,
-    status: 'Open',
-    owner: 'Ravan',
-    created: new Date('2016-08-15'),
-    effort: 5,
-    completionDate: undefined,
-    title: 'Error in console when clicking Add'
-  },
-  {
-    id: 2,
-    status: 'Assigned',
-    owner: 'Eddie',
-    created: new Date('2016-08-16'),
-    effort: 14,
-    completionDate: new Date('2016-08-30'),
-    title: 'Missing bottom border on panel'
-  }
-]
-
 class IssueList extends React.Component {
   constructor() {
-    super()
-    this.state = { issues: [] }
+    super();
+    this.state = { issues: [] };
 
-    this.createIssue = this.createIssue.bind(this)
+    this.createIssue = this.createIssue.bind(this);
   }
 
   componentDidMount() {
-    this.loadData()
+    this.loadData();
   }
 
   loadData() {
-    setTimeout(() => {
-      this.setState({ issues })
-    }, 500)
+    fetch('/api/issues')
+      .then(response => response.json())
+      .then(data => {
+        console.log('Total count of records:', data._metadata.total_count);
+        data.records.forEach(issue => {
+          issue.created = new Date(issue.created);
+          if (issue.completionDate)
+            issue.completionDate = new Date(issue.completionDate);
+        });
+        this.setState({ issues: data.records });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   createIssue(newIssue) {
-    const newIssues = this.state.issues.slice()
-    newIssue.id = this.state.issues.length + 1
-    newIssues.push(newIssue)
-    this.setState({ issues: newIssues })
+    fetch('/api/issues', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newIssue)
+    })
+      .then(response => {
+        if (response.ok) {
+          response.json().then(updatedIssue => {
+            updatedIssue.created = new Date(updatedIssue.created);
+            if (updatedIssue.completionDate)
+              updatedIssue.completionDate = new Date(
+                updatedIssue.completionDate
+              );
+            const newIssues = this.state.issues.concat(updatedIssue);
+            this.setState({ issues: newIssues });
+          });
+        } else {
+          response.json().then(error => {
+            alert(`Failed to add issue: ${  error.message}`);
+          });
+        }
+      })
+      .catch(err => {
+        alert(`Error in sending data to server: ${  err.message}`);
+      });
   }
 
   render() {
@@ -133,8 +144,8 @@ class IssueList extends React.Component {
         <hr />
         <IssueAdd createIssue={this.createIssue} />
       </div>
-    )
+    );
   }
 }
 
-ReactDOM.render(<IssueList />, contentNode) // Render the component inside the content Node
+ReactDOM.render(<IssueList />, contentNode); // Render the component inside the content Node

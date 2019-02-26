@@ -4,6 +4,7 @@
   "description": "code in book ProMernStack",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon -w server.js server.js",
     "compile": "babel src --out-dir static",
     "watch": "babel src --presets react,env --out-dir static -watch",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,6 +21,7 @@
   "homepage": "https://github.com/givemepower8/ProMernStack#readme",
   "dependencies": {
     "babel-eslint": "^10.0.1",
+    "body-parser": "^1.18.3",
     "eslint": "^5.14.1",
     "eslint-plugin-prettier": "^3.0.1",
     "express": "^4.16.4"
@@ -33,6 +35,7 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
+    "nodemon": "^1.18.10",
     "prettier": "^1.16.4"
   }
 }
