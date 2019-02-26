@@ -55,3 +55,7 @@ npm install -D nodemon
 The –w command line option is to tell nodemon which files to watch for changes.
 
 If you don't supply the command line option, it would have watched for changes in any file in the current directory and subdirectories. Thus, it would have restarted even when front-end code changed, and that's not what you want. The above example only watches for changes in server.js file.
+
+webpack
+
+`npm install -D webpack`
