@@ -59,3 +59,5 @@ If you don't supply the command line option, it would have watched for changes i
 webpack
 
 `npm install -D webpack`
+
+`npx webpack static/App.js`
