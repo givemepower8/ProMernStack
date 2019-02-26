@@ -1,8 +1,10 @@
+var port = process.env.PORT || 80;
+
 const express = require('express');
 
 const app = express();
 app.use(express.static('static'));
 
-app.listen(3000, function() {
-  console.log('App started on port 3000');
+app.listen(port, function() {
+  console.log('App started');
 });
