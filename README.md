@@ -14,9 +14,13 @@ Install express
 
 `npm install -D babel-cli babel-preset-react babel-preset-env`
 
+`node_modules\.bin\babel --version`
+
 compile
 
 `node_modules\.bin\babel src --presets react,env --out-dir static`
+
+`npx babel src --presets react,env --out-dir static`
 
 watch
 

@@ -1,8 +1,10 @@
-const contentNode = document.getElementById('contents');
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 
-const continents = ['Africa', 'America', 'Asia', 'Australia', 'Europe'];
-const message = continents.map(c => `Hello ${c}!`).join(' ');
-
-const component = <p>{message}</p>; // A simple component, written in JSX
-
-ReactDOM.render(component, contentNode); // Render the component inside the content Node
+const contentNode = document.getElementById('contents')
+class IssueList extends React.Component {
+  render() {
+    return <div>This is a placeholder for the issue list.</div>
+  }
+}
+ReactDOM.render(<IssueList />, contentNode)
