@@ -1,7 +1,7 @@
 {
     "extends": ["airbnb", "prettier", "prettier/react"],
     "env": {
-        "jest": true
+        "node": true
     },
     "plugins": ["prettier"],
     "rules": {
@@ -14,11 +14,16 @@
         "linebreak-style": 0,
         "react/prefer-stateless-function": "off",
         "react/prop-types": 0,
-        "no-underscore-dangle": 0,
         "import/imports-first": ["error", "absolute-first"],
         "import/newline-after-import": "error",
         "import/no-extraneous-dependencies": ["error", {
             "devDependencies": true
+        }],
+        "no-underscore-dangle": ["error", {
+            "allow": ["_id"]
+        }],
+        "no-param-reassign": ["error", {
+            "props": false
         }]
     },
     "globals": {

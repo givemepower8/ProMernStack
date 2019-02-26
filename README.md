@@ -36,6 +36,8 @@ watch
 
 `node server.js`
 
+`npm install -D babel-loader`
+
 Babel 7
 
 [react-webpack-babel](https://www.valentinog.com/blog/react-webpack-babel/)
@@ -61,3 +63,7 @@ webpack
 `npm install -D webpack`
 
 `npx webpack static/App.js`
+
+`npm install -D webpack-dev-server`
+
+`npm install -D react react-dom whatwg-fetch babel-polyfill`
