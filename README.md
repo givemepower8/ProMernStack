@@ -12,11 +12,11 @@ Install express
 
 `npm install express --save`
 
+Babel 6
+
 `npm install -D babel-cli babel-preset-react babel-preset-env`
 
-babel-preset-es2015
-
-`node_modules\.bin\babel --version`
+`node_modules\.bin\babel --version` or `npx babel --version`
 
 compile
 
@@ -29,5 +29,7 @@ watch
 `node_modules\.bin\babel src –presets react,env –out-dir static –watch`
 
 `node server.js`
+
+Babel 7
 
 [react-webpack-babel](https://www.valentinog.com/blog/react-webpack-babel/)
