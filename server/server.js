@@ -1,12 +1,18 @@
-var port = process.env.PORT || 80;
+import SourceMapSupport from 'source-map-support';
+import 'babel-polyfill';
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const { MongoClient } = require('mongodb');
+import express from 'express';
+import bodyParser from 'body-parser';
+import { MongoClient } from 'mongodb';
+import Issue from './issue';
+
+SourceMapSupport.install();
 
 const app = express();
 app.use(express.static('static'));
 app.use(bodyParser.json());
+
+let db;
 
 app.get('/api/issues', (req, res) => {
   db.collection('issues')
@@ -22,53 +28,21 @@ app.get('/api/issues', (req, res) => {
     });
 });
 
-const validIssueStatus = {
-  New: true,
-  Open: true,
-  Assigned: true,
-  Fixed: true,
-  Verified: true,
-  Closed: true
-};
-
-const issueFieldType = {
-  status: 'required',
-  owner: 'required',
-  effort: 'optional',
-  created: 'required',
-  completionDate: 'optional',
-  title: 'required'
-};
-
-function validateIssue(issue) {
-  for (const field in issueFieldType) {
-    const type = issueFieldType[field];
-    if (!type) {
-      delete issue[field];
-    } else if (type === 'required' && !issue[field]) {
-      return `${field} is required.`;
-    }
-  }
-
-  if (!validIssueStatus[issue.status])
-    return `${issue.status} is not a valid status.`;
-
-  return null;
-}
-
 app.post('/api/issues', (req, res) => {
   const newIssue = req.body;
   newIssue.created = new Date();
-  if (!newIssue.status) newIssue.status = 'New';
+  if (!newIssue.status) {
+    newIssue.status = 'New';
+  }
 
-  const err = validateIssue(newIssue);
+  const err = Issue.validateIssue(newIssue);
   if (err) {
     res.status(422).json({ message: `Invalid request: ${err}` });
     return;
   }
 
   db.collection('issues')
-    .insertOne(newIssue)
+    .insertOne(Issue.cleanupIssue(newIssue))
     .then(result =>
       db
         .collection('issues')
@@ -76,8 +50,8 @@ app.post('/api/issues', (req, res) => {
         .limit(1)
         .next()
     )
-    .then(newIssue => {
-      res.json(newIssue);
+    .then(savedIssue => {
+      res.json(savedIssue);
     })
     .catch(error => {
       console.log(error);
@@ -85,7 +59,6 @@ app.post('/api/issues', (req, res) => {
     });
 });
 
-let db;
 MongoClient.connect('mongodb://localhost:27017')
   .then(connection => {
     db = connection.db('issuetracker');

@@ -1,0 +1,11 @@
+{
+    "env": {
+        "browser": true
+    },
+    "rules": {
+        "no-alert": ["off"],
+        "no-param-reassign": [2, {
+            "props": false
+        }]
+    }
+}

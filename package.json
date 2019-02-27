@@ -4,6 +4,7 @@
   "description": "code in book ProMernStack",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon -w server.js server.js",
     "compile": "babel src --out-dir static",
     "watch": "babel src --presets react,env --out-dir static -watch",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,11 +20,35 @@
   },
   "homepage": "https://github.com/givemepower8/ProMernStack#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "async": "^2.6.2",
+    "babel-eslint": "^10.0.1",
+    "body-parser": "^1.18.3",
+    "eslint": "^5.14.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "express": "^4.16.4",
+    "mongodb": "^3.1.13"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.5",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1"
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
+    "nodemon": "^1.18.10",
+    "prettier": "^1.16.4",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "source-map-support": "^0.5.10",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1",
+    "whatwg-fetch": "^3.0.0"
   }
 }

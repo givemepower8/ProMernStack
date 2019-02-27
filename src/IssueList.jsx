@@ -1,29 +1,32 @@
-const contentNode = document.getElementById('contents');
+import React from 'react';
+import 'whatwg-fetch';
+import PropTypes from 'prop-types';
 
-class IssueFilter extends React.Component {
-  render() {
-    return <div>This is a placeholder for the Issue Filter.</div>;
-  }
-}
+import IssueAdd from './IssueAdd';
+import IssueFilter from './IssueFilter';
 
-const IssueRow = props => (
-  <tr>
-    <td>{props.issue._id}</td>
-    <td>{props.issue.status}</td>
-    <td>{props.issue.owner}</td>
-    <td>{props.issue.created.toDateString()}</td>
-    <td>{props.issue.effort}</td>
-    <td>
-      {props.issue.completionDate
-        ? props.issue.completionDate.toDateString()
-        : ''}
-    </td>
-    <td>{props.issue.title}</td>
-  </tr>
-);
+const IssueRow = props => {
+  const { issue } = props;
+  return (
+    <tr>
+      <td>{issue._id}</td>
+      <td>{issue.status}</td>
+      <td>{issue.owner}</td>
+      <td>{issue.created.toDateString()}</td>
+      <td>{issue.effort}</td>
+      <td>{issue.completionDate ? issue.completionDate.toDateString() : ''}</td>
+      <td>{issue.title}</td>
+    </tr>
+  );
+};
+
+IssueRow.propTypes = {
+  issue: PropTypes.isRequired
+};
 
 function IssueTable(props) {
-  const issueRows = props.issues.map(issue => (
+  const { issues } = props;
+  const issueRows = issues.map(issue => (
     <IssueRow key={issue._id} issue={issue} />
   ));
   return (
@@ -44,40 +47,11 @@ function IssueTable(props) {
   );
 }
 
-class IssueAdd extends React.Component {
-  constructor() {
-    super();
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+IssueTable.propTypes = {
+  issues: PropTypes.isRequired
+};
 
-  handleSubmit(e) {
-    e.preventDefault();
-    let form = document.forms.issueAdd;
-    this.props.createIssue({
-      owner: form.owner.value,
-      title: form.title.value,
-      status: 'New',
-      created: new Date()
-    });
-    // clear the form for the next input
-    form.owner.value = '';
-    form.title.value = '';
-  }
-
-  render() {
-    return (
-      <div>
-        <form name="issueAdd" onSubmit={this.handleSubmit}>
-          <input type="text" name="owner" placeholder="Owner" />
-          <input type="text" name="title" placeholder="Title" />
-          <button>Add</button>
-        </form>
-      </div>
-    );
-  }
-}
-
-class IssueList extends React.Component {
+export default class IssueList extends React.Component {
   constructor() {
     super();
     this.state = { issues: [] };
@@ -94,22 +68,22 @@ class IssueList extends React.Component {
       .then(response => {
         if (response.ok) {
           response.json().then(data => {
-            console.log('Total count of records:', data._metadata.total_count);
             data.records.forEach(issue => {
               issue.created = new Date(issue.created);
-              if (issue.completionDate)
+              if (issue.completionDate) {
                 issue.completionDate = new Date(issue.completionDate);
+              }
             });
             this.setState({ issues: data.records });
           });
         } else {
           response.json().then(error => {
-            alert(`Failed to fetch issues:${  error.message}`);
+            alert(`Failed to fetch issues ${error.message}`);
           });
         }
       })
       .catch(err => {
-        alert('Error in fetching data from server:', err);
+        alert(`Error in fetching data from server: ${err}`);
       });
   }
 
@@ -123,21 +97,22 @@ class IssueList extends React.Component {
         if (response.ok) {
           response.json().then(updatedIssue => {
             updatedIssue.created = new Date(updatedIssue.created);
-            if (updatedIssue.completionDate)
+            if (updatedIssue.completionDate) {
               updatedIssue.completionDate = new Date(
                 updatedIssue.completionDate
               );
+            }
             const newIssues = this.state.issues.concat(updatedIssue);
             this.setState({ issues: newIssues });
           });
         } else {
           response.json().then(error => {
-            alert(`Failed to add issue: ${  error.message}`);
+            alert(`Failed to add issue: ${error.message}`);
           });
         }
       })
       .catch(err => {
-        alert(`Error in sending data to server: ${  err.message}`);
+        alert(`Error in sending data to server: ${err.message}`);
       });
   }
 
@@ -154,5 +129,3 @@ class IssueList extends React.Component {
     );
   }
 }
-
-ReactDOM.render(<IssueList />, contentNode); // Render the component inside the content Node
